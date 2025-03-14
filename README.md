@@ -1,28 +1,92 @@
 # Anonno Vai
 
-Welcome to the Anonno Vai repository, which features a collection of Jupyter Notebooks and Python scripts for various machine learning models. The primary programming languages used in this repository are Jupyter Notebook (99.9%) and Python (0.1%).
+Welcome to the Anonno Vai repository, a comprehensive collection of deep learning models for detecting deepfakes across multiple modalities (audio, images, and videos).
 
 ## Overview
 
-This repository is designed to facilitate the training and evaluation of different machine learning models. It provides comprehensive notebooks that guide you through the entire process, from data preprocessing to model evaluation.
+This repository provides ready-to-use notebooks and scripts for training, evaluating, and deploying deepfake detection models. The implementation focuses on Convolutional Neural Networks (CNN) and Vision Transformer (ViT) architectures to distinguish between real and AI-generated content.
 
-## Download Models
+## Features
 
-You can download the pre-trained models from the following link:
+- **Audio Deepfake Detection**: CNN-based models to identify synthetic audio
+- **Image Deepfake Detection**: Models for detecting manipulated faces and images
+- **Video Deepfake Detection**: Both CNN and ViT implementations for video deepfake analysis
+- **Pre-trained Models**: Ready-to-use models trained on standard deepfake datasets
+
+## Repository Structure
+
+- **Notebooks**:
+  - [`audio_deep_fake_cnn.ipynb`](audio_deep_fake_cnn.ipynb): Audio deepfake detection using CNN
+  - [`real_fake_face_cnn.ipynb`](real_fake_face_cnn.ipynb): Face deepfake detection
+  - [`real_fake_video_cnn.ipynb`](real_fake_video_cnn.ipynb): Video deepfake detection with CNN
+  - [`real_fake_video_vit.ipynb`](real_fake_video_vit.ipynb): Video deepfake detection with Vision Transformer
+  - [`fake_video_cnn_qwen.ipynb`](fake_video_cnn_qwen.ipynb): CNN model with Qwen integration
+
+- **Python Scripts**:
+  - [`audio_test.py`](audio_test.py): Testing script for audio models
+  - [`vit.py`](vit.py): Vision Transformer implementation
+
+- **Pre-trained Models**:
+  - Audio deepfake detection
+  - Image classification
+  - Video deepfake detection
+
+## Download Pre-trained Models
+
+You can download our pre-trained models from the following link:
 
 [Download Models](https://drive.google.com/drive/folders/1nY-ylZbvnTxqJKAtBrbAeNPWSXivJn3G?usp=sharing)
 
-## Table of Contents
-
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
-
 ## Installation
 
-To get started, clone this repository to your local machine:
+### Prerequisites
+- Python 3.8+
+- CUDA-capable GPU (recommended)
+
+### Setup
+
+1. Clone this repository to your local machine:
 
 ```bash
 git clone https://github.com/RaihanulHaque/anonno_vai.git
+cd anonno_vai
+```
+
+2. Create a virtual environment and install dependencies:
+
+```bash
+# Create and activate virtual environment
+python -m venv env
+source env/bin/activate  # On Windows, use: env\Scripts\activate
+
+# Install required packages
+pip install torch torchvision torchaudio
+pip install pandas numpy matplotlib seaborn scikit-learn
+pip install jupyter notebook
+```
+
+3. Download the pre-trained models and place them in the `models` directory.
+
+## Usage
+
+### Running Notebooks
+
+1. Start the Jupyter notebook server:
+
+```bash
+jupyter notebook
+```
+
+2. Open any of the provided notebooks to:
+    - Train a new model
+    - Evaluate the model
+    - Perform inference on new data
+
+
+### Testing Audio Models
+
+To test the audio models, run the following command:
+
+```bash
+python audio_test.py
+```
