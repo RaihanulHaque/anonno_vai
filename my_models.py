@@ -1,10 +1,10 @@
 import torch
 import torch.nn as nn
 import torchaudio.transforms as T
-import numpy as np
 from torchvision import models
+from transformers import ViTForImageClassification
 
-# Base Model class to allow for future extensibility
+# Base Model class for consistency across all models
 class BaseModel(nn.Module):
     def __init__(self):
         super(BaseModel, self).__init__()
@@ -12,16 +12,11 @@ class BaseModel(nn.Module):
     def forward(self, x):
         raise NotImplementedError("Subclasses must implement forward method")
 
-class FaceClassifier(nn.Module):
+class FaceClassifier(BaseModel):
     def __init__(self):
         super(FaceClassifier, self).__init__()
-        # Load pretrained DenseNet121
         self.backbone = models.densenet121(pretrained=True)
-        
-        # Get the number of features from the last layer
         num_features = self.backbone.classifier.in_features
-        
-        # Replace the classifier
         self.backbone.classifier = nn.Sequential(
             nn.Linear(num_features, 512),
             nn.ReLU(),
@@ -33,7 +28,6 @@ class FaceClassifier(nn.Module):
     
     def forward(self, x):
         return self.backbone(x)
-    
 
 class AudioCNN(BaseModel):
     def __init__(self):
@@ -45,7 +39,7 @@ class AudioCNN(BaseModel):
         self.bn2 = nn.BatchNorm2d(64)
         self.conv3 = nn.Conv2d(64, 128, kernel_size=3, padding=1)
         self.bn3 = nn.BatchNorm2d(128)
-        self.fc1 = nn.Linear(128 * 16 * 10, 256)  # Adjust based on your input size
+        self.fc1 = nn.Linear(128 * 16 * 10, 256)  # Adjust based on input size
         self.dropout = nn.Dropout(0.5)
         self.fc2 = nn.Linear(256, 1)
     
@@ -57,4 +51,20 @@ class AudioCNN(BaseModel):
         x = torch.relu(self.fc1(x))
         x = self.dropout(x)
         x = torch.sigmoid(self.fc2(x))
+        return x
+
+class VideoClassifier(BaseModel):
+    def __init__(self, vit_model):
+        super(VideoClassifier, self).__init__()
+        self.vit = vit_model.vit  # Use ViT backbone only
+        self.lstm = nn.LSTM(input_size=768, hidden_size=64, batch_first=True)
+        self.fc = nn.Linear(64, 2)
+
+    def forward(self, x):
+        batch_size, seq_len, C, H, W = x.size()
+        x = x.view(batch_size * seq_len, C, H, W)
+        x = self.vit(x).last_hidden_state[:, 0, :]
+        x = x.view(batch_size, seq_len, 768)
+        x, _ = self.lstm(x)
+        x = self.fc(x[:, -1, :])
         return x

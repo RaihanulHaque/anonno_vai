@@ -18,9 +18,9 @@ This repository provides ready-to-use notebooks and scripts for training, evalua
 - **Notebooks**:
   - [`audio_deep_fake_cnn.ipynb`](audio_deep_fake_cnn.ipynb): Audio deepfake detection using CNN
   - [`real_fake_face_cnn.ipynb`](real_fake_face_cnn.ipynb): Face deepfake detection
-  - [`real_fake_video_cnn.ipynb`](real_fake_video_cnn.ipynb): Video deepfake detection with CNN
   - [`real_fake_video_vit.ipynb`](real_fake_video_vit.ipynb): Video deepfake detection with Vision Transformer
-  - [`fake_video_cnn_qwen.ipynb`](fake_video_cnn_qwen.ipynb): CNN model with Qwen integration
+  - [`real_fake_video_cnn.ipynb`](real_fake_video_cnn.ipynb): Video deepfake detection with CNN
+
 
 - **Python Scripts**:
   - [`audio_test.py`](audio_test.py): Testing script for audio models
@@ -42,6 +42,12 @@ You can download our pre-trained models from the following link:
 ### Prerequisites
 - Python 3.8+
 - CUDA-capable GPU (recommended)
+- MPS (Apple Silicon) support for MacOS
+- Basic knowledge of deep learning and PyTorch
+- Familiarity with Jupyter notebooks
+- Basic understanding of audio and video processing
+- Basic understanding of image processing
+- Basic understanding of deepfake detection techniques
 
 ### Setup
 
@@ -62,7 +68,9 @@ source env/bin/activate  # On Windows, use: env\Scripts\activate
 # Install required packages
 pip install torch torchvision torchaudio
 pip install pandas numpy matplotlib seaborn scikit-learn
-pip install jupyter notebook
+pip install opencv-python fastapi uvicorn
+pip install transformers
+pip install librosa soundfile tqdm Pillow
 ```
 
 3. Download the pre-trained models and place them in the `models` directory.
